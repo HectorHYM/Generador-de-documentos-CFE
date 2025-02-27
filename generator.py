@@ -167,7 +167,7 @@ def generate_reports():
     month_name = datetime(1900, current_month, 1).strftime('%B').capitalize()
 
     # Verifica que las columnas esenciales existan en ambos Dataframes
-    required_columns = {'ID_CURSO', 'MES_PROGRAMADO', 'FECHA_INICIO', 'FECHA_TERMINO'}
+    required_columns = {'ID_CURSO', 'MES_PROGRAMADO', 'FECHA_INICIO', 'FECHA_TERMINO', 'ID_ACTIVIDAD'}
     if not required_columns.issubset(df_courses.columns) or not required_columns.issubset(df_participants.columns):
         print("Error: El archivo o algunas de las hojas no contiene las columnas necesarias: ID_CURSO, MES_PROGRAMADO, FECHA_INICIO, FECHA_TERMINO")
         exit()
@@ -178,6 +178,7 @@ def generate_reports():
     df_complete.rename(columns={'MES_PROGRAMADO_x': 'MES_PROGRAMADO_COUR', 'MES_PROGRAMADO_y': 'MES_PROGRAMADO_PART'}, inplace=True)
     df_complete.rename(columns={'FECHA_INICIO_x': 'FECHA_INICIO_COUR', 'FECHA_INICIO_y': 'FECHA_INICIO_PART'}, inplace=True)
     df_complete.rename(columns={'FECHA_TERMINO_x': 'FECHA_TERMINO_COUR', 'FECHA_TERMINO_y': 'FECHA_TERMINO_PART'}, inplace=True)
+    df_complete.rename(columns={'ID_ACTIVIDAD_x': 'ID_ACTIVIDAD_COUR', 'ID_ACTIVIDAD_y': 'ID_ACTIVIDAD_PART'}, inplace=True)
     # print(df_complete.columns) ---- Se imprimen las columnas del Dataframe resultante de la unión de la tabla de los cursos y los participantes
 
     # Filtra los cursos que corresponden al mes a procesar
@@ -204,7 +205,8 @@ def generate_reports():
                 participants = df_complete.loc[(df_complete['ID_CURSO'] == row['ID_CURSO']) 
                                                & (df_complete['MES_PROGRAMADO_PART'] == current_month)
                                                & (df_complete['FECHA_INICIO_PART'] == row['FECHA_INICIO']) 
-                                               & (df_complete['FECHA_TERMINO_PART'] == row['FECHA_TERMINO'])]
+                                               & (df_complete['FECHA_TERMINO_PART'] == row['FECHA_TERMINO'])
+                                               & (df_complete['ID_ACTIVIDAD_PART'] == row['ID_ACTIVIDAD'])]
                 
                 # Convierte la información de los participantes a una lista de diccionarios y elimina duplicados
                 participants_list = participants[['RPE', 'NOMBRE_COMPLETO', 'SEXO_TRAB']].drop_duplicates(subset=['RPE', 'NOMBRE_COMPLETO']).to_dict('records')
@@ -246,7 +248,7 @@ def generate_reports():
                         courses_without_participants += 1
 
                     # Genera un nombre de archivo seguro para el reporte y lo guarda en el directorio temporal
-                    file_name = os.path.join(temp_dir, f'REPORTE_{row["NOMBRE_CURSO"].replace("/", "_").replace(" ", "_")}_'f'{row["FECHA_INICIO"]}_'f'{row["FECHA_TERMINO"]}_L{batch + 1}.docx')
+                    file_name = os.path.join(temp_dir, f'REPORTE_{row["NOMBRE_CURSO"].replace("/", "_").replace(" ", "_")}_'f'{row["FECHA_INICIO"]}_'f'{row["FECHA_TERMINO"]}_L{batch + 1}_'f'{row["ID_ACTIVIDAD"]}.docx')
                     try:    
                         doc.save(file_name)
                         # print(f"Documento generado: {file_name}") ---- Se imprime el documento generado en la iteración
