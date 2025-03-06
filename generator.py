@@ -125,7 +125,7 @@ def add_participants(doc, participants):
 def generate_reports():
     try:
         # Ruta del archivo Excel con la información de cursos y participantes
-        excel_path = 'InformeDetalladoP01 2025.xlsx'
+        excel_path = 'db_excel.xlsx'
         if not os.path.exists(excel_path):
             error_message = f"Error: No se encontró el archivo {excel_path}. Verifique su existencia o ubicación"
             print(error_message, flush=True)
@@ -209,7 +209,7 @@ def generate_reports():
                                                & (df_complete['ID_ACTIVIDAD_PART'] == row['ID_ACTIVIDAD'])]
                 
                 # Convierte la información de los participantes a una lista de diccionarios y elimina duplicados
-                participants_list = participants[['RPE', 'NOMBRE_COMPLETO', 'SEXO_TRAB']].drop_duplicates(subset=['RPE', 'NOMBRE_COMPLETO']).to_dict('records')
+                participants_list = participants[['RPE', 'NOMBRE_COMPLETO', 'SEXO_TRAB']].fillna('').drop_duplicates(subset=['RPE', 'NOMBRE_COMPLETO']).to_dict('records')
                 # print(participants_list) ---- Se imprime la lista de diccionarios de los participantes
 
                 # Se calcula el número de lotes los cuales se dividen por 10 participantes en cada uno
@@ -248,7 +248,7 @@ def generate_reports():
                         courses_without_participants += 1
 
                     # Genera un nombre de archivo seguro para el reporte y lo guarda en el directorio temporal
-                    file_name = os.path.join(temp_dir, f'REPORTE_{row["NOMBRE_CURSO"].replace("/", "_").replace(" ", "_")}_'f'{row["FECHA_INICIO"]}_'f'{row["FECHA_TERMINO"]}_L{batch + 1}_'f'{row["ID_ACTIVIDAD"]}.docx')
+                    file_name = os.path.join(temp_dir, f'{row["NOMBRE_CURSO"].replace("/", "_").replace(" ", "_")}_'f'{row["FECHA_INICIO"]}_'f'{row["FECHA_TERMINO"]}_L{batch + 1}_'f'{row["ID_ACTIVIDAD"]}.docx')
                     try:    
                         doc.save(file_name)
                         # print(f"Documento generado: {file_name}") ---- Se imprime el documento generado en la iteración
@@ -262,6 +262,7 @@ def generate_reports():
 
             try:
                 if not reports_generated:
+                    print(reports_generated)
                     error_message = "No existen documentos generados para comprimir"
                     print(error_message, flush=True)
                     sys.exit(1)
