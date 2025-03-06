@@ -30,32 +30,43 @@
             <!-- Contenedor interno donde se ubica el mensaje de bienvenida y el botón -->
             <div class="main-cont-internal">
                 <!-- Título principal con la fuente importada, mostrando el mensaje de bienvenida -->
-                <h2 class="atkinson-hyperlegible-next">
+                <h2 class="atkinson-hyperlegible-next-semibold">
                     Bienvenido!
-                    Presione el botón para generar los reportes del mes!
+                    Genere sus documentos de manera rapida y sencilla!
                 </h2>
                 <img class="report-gif" src="{{ url_for('static', filename='img/report_animation.gif') }}" alt="Detalle animado">
+                <form class="upload-file-form" id="uploadFileForm" enctype="multipart/form-data">
+                    <label for="excelFile" class="atkinson-hyperlegible-next custom-input-file">Seleccionar nuevo archivo de datos</label>
+                    <input type="file" name="excel_file" id="excelFile" class="excel-file" accept=".xlsx, .xls">
+                    <p class="atkinson-hyperlegible-next pinned-excel-p">Archivo anclado: <span id="pinnedExcelSpan" class="pinned-excel-span">Ninguno</span></p>
+                    <p class="atkinson-hyperlegible-next current-excel-p">Archivo en uso: <span id="currentExcelSpan" class="current-excel-span">Ninguno</span></p>
+                    <button class="atkinson-hyperlegible-next upload-excel-btn" type="submit">Subir archivo Excel</button>
+                </form>
                 <!-- Selector de mes en los que se generaran los reportes-->
-                <p class="atkinson-hyperlegible-next">Seleccione el mes que desea generar</p>
-                <select class="month-select atkinson-hyperlegible-next" id="monthSelect">
-                    <option value="1">Enero</option>
-                    <option value="2">Febrero</option>
-                    <option value="3">Marzo</option>
-                    <option value="4">Abril</option>
-                    <option value="5">Mayo</option>
-                    <option value="6">Junio</option>
-                    <option value="7">Julio</option>
-                    <option value="8">Agosto</option>
-                    <option value="9">Septiembre</option>
-                    <option value="10">Octubre</option>
-                    <option value="11">Noviembre</option>
-                    <option value="12">Diciembre</option>    
-                </select>
-                <!-- Botón para generar los reportes; se le asigna un ID para poder capturar el evento desde JavaScript -->
-                <button class="generator-btn atkinson-hyperlegible-next" id="generatorBtn">Generar</button>
+                <div class="generator-cont">
+                    <div class="month-selector-cont">
+                        <p class="atkinson-hyperlegible-next">Seleccione el mes que desea generar</p>
+                        <select class="month-select atkinson-hyperlegible-next" id="monthSelect">
+                            <option value="1">Enero</option>
+                            <option value="2">Febrero</option>
+                            <option value="3">Marzo</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Mayo</option>
+                            <option value="6">Junio</option>
+                            <option value="7">Julio</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Noviembre</option>
+                            <option value="12">Diciembre</option>    
+                        </select>
+                    </div>
+                    <!-- Botón para generar los reportes; se le asigna un ID para poder capturar el evento desde JavaScript -->
+                    <button class="generator-btn atkinson-hyperlegible-next" id="generatorBtn">Generar</button>
+                </div>
             </div>
             <div class="historial-cont">
-                <h2 class="atkinson-hyperlegible-next">Ultimos reportes generados</h2>
+                <h2 class="atkinson-hyperlegible-next-semibold">Ultimos reportes generados</h2>
                 <ul class="historial-list" id="historial-list"></ul>
                 <div>
                     <button class="clean-btn atkinson-hyperlegible-next" id="cleanHistorialBtn">Limpiar Historial</button>

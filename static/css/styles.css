@@ -21,6 +21,13 @@ html, body {
     font-optical-sizing: auto;
     font-weight: 500;
     font-style: normal;
+}
+
+.atkinson-hyperlegible-next-semibold{
+    font-family: "Atkinson Hyperlegible Next", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
   }
 
 /* Elementos */
@@ -28,7 +35,9 @@ html, body {
 .generator-btn,
 .details-btn,
 .clean-btn,
-.month-select{
+.month-select,
+.custom-input-file,
+.upload-excel-btn{
     transition: 0.3s all ease;
 }
 
@@ -65,8 +74,8 @@ header{
     align-items: center;
     flex-direction: column;
     gap: 15px;
-    height: 380px;
-    max-height: 380px;
+    height: 500px;
+    max-height: 500px;
     width: 500px;
     margin: 20px;
     background-color: #FFFFFF;
@@ -92,12 +101,81 @@ h3{
     margin: 10px;
 }
 
+/* Estilo personalizado para input que se utiliza para el archivo Excel*/
+.upload-file-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.excel-file{
+    display: none;
+}
+
+.custom-input-file{
+    border: 2px solid #00743f;
+    display: inline-block;
+    padding: 8px 20px;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 8px 5px rgba(0, 0, 0, 0.2);
+}
+
+.custom-input-file:hover{
+    background-color: #00743f;
+    color: #FFFFFF;
+}
+
+.current-excel-p,
+.pinned-excel-p{
+    margin-top: 12px;
+}
+
+.current-excel-span{
+    color: #22a24b;
+}
+
+.pinned-excel-span{
+    color: #4189ff;
+}
+
+.upload-excel-btn{
+    margin-top: 12px;
+    padding: 10px;
+    background-color: #22a24b;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 8px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.upload-excel-btn:hover{
+    background-color: #00743f;
+}
+
+.generator-cont{
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.month-selector-cont{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
 .month-select{
     width: 200px;
     padding: 8px, 12px;
     font-size: 16px;
     border: 2px solid;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .month-select:focus{

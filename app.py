@@ -3,12 +3,22 @@ import subprocess # Ayuda en la ejecución de procesos externos (se utiliza para
 import os # Manejo de archivos y directorios
 import threading # Permite ejecutar tareas en hilos paralelos
 import time # Manejo de tiempos de espera (sleep)
+from werkzeug.utils import secure_filename
+import shutil # Operaciones de alto nivel con archivos (copiar, mover, etc...)
 
 # Configuración del directorio del historial
 # Se define la carpeta donde se guardará el historial de los reportes generados
 HISTORIAL_DIR = os.path.join(os.getcwd(), "reports_historial")
 if not os.path.exists(HISTORIAL_DIR):
     os.makedirs(HISTORIAL_DIR)
+
+# Configuración del directorio de subida y extensiones permitidas
+# Se define la carpeta donde se guardará el archivo excel subido por el usuario con la información de los cursos
+# Se declaran la extensiones validas para el archivo
+UPLOAD_FOLDER = os.path.join(os.getcwd(), "excel_upload")
+ALLOWED_EXTENSIONS = {'xlsx', 'xls'}
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 # Se crea una instancia de la aplicación Flask
 app = Flask(__name__)
@@ -20,6 +30,65 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     return render_template("index.html")
+
+# =====================================================================================================
+# Endpoint: /upload_excel
+# Objetivo: Actualizar la base de datos con la información de los cursos y participantes
+# sin tener que acceder directamente al servidor.
+# - Se recibe el archivo Excel desde la web, lo valida y lo guarda o reemplaza en una
+#   ubicación accesible para que el proceso de generación de reportes utilice los datos actualizados.
+# - Devuelve una respuesta JSON indicando ya sea el éxito o el error.
+# =====================================================================================================
+@app.route('/upload_excel', methods=['POST'])
+def upload_excel():
+    if 'excel_file' not in request.files:
+        return jsonify({"error": "No se encontró el archivo en la solicitud"}), 400
+    
+    file = request.files['excel_file']
+    if file.filename == "":
+        return jsonify({"error": "No se seleccionó ningún archivo"}), 400
+    
+    if file and allowed_file(file.filename):
+        # Se eliminan los archivos previos en UPLOAD_FOLDER para que quede solo el último que se subio
+        for f in os.listdir(UPLOAD_FOLDER):
+            os.remove(os.path.join(UPLOAD_FOLDER, f))
+
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        try:
+            file.save(file_path)
+            DATA_FILE = os.path.join(os.getcwd(), "db_excel.xlsx")
+            shutil.copy(file_path, DATA_FILE)
+            return jsonify({"message": f"Archivo '{filename}' subido y actualizado exitosamente."})
+        except Exception as e:
+            return jsonify({"error": f"Error al guardar el archivo: str{e}"}), 500
+    else:
+        return jsonify({"error": "Tipo de archivo no permitido. Solo se permiten archivos Excel."}), 400
+    
+# ======================================================================================================
+# Endpoint: /current_excel
+# Objetivo: Devolver el nombre del ultimo archivo Excel subido por el usuario con la intención de que
+# el usuario sepa de que archivo se generaran los documentos en caso de querer generarlos al instante.
+# ======================================================================================================   
+@app.route('/current_excel', methods=['GET'])
+def current_excel():
+    try:
+        files = os.listdir(UPLOAD_FOLDER)
+        if len(files) == 1:
+            current_filename = files[0]
+            return jsonify({ "filename": current_filename })
+        else:
+            return jsonify({"filename": None})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# ===============================================================================================
+# Función: allowed_file
+# Objetivo: Verificar que el archivo subido por el usuario contenga las extensiones permitidas,
+# en este caso solo Excel es permitido.
+# ===============================================================================================
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # ==========================================================================================
 # Endpoint: /download_zip
@@ -37,7 +106,7 @@ def download_zip():
         # Se lanza la eliminación del archivo ZIP en un hilo separado para no bloquear la respuesta
         threading.Thread(target=delayed_delete, args=(zip_path,)).start()
         return response
-    return jsonify({"error": "Archivo ZIP no encontrado"}), 500
+    return jsonify({"error": "Archivo ZIP no encontrado, revise el formato del archivo de datos"}), 500
 
 # =============================================================================
 # Función: delayed_delete
@@ -129,7 +198,7 @@ def report_generator():
                     "summary": summary
                 })
 
-            return jsonify({"error": "Archivo ZIP no encontrado"}), 500
+            return jsonify({"error": "Archivo ZIP no encontrado. Revise el formato del archivo Excel."}), 500
         # Si hubo algún error en la ejecución, se devuelve un mensaje de error con los detalles de la salida del error
         else:
             return jsonify({"error": "Error al generar los reportes", "details": result.stderr}), 500 # 500 es un código HTTP que indica un error interno en el servidor

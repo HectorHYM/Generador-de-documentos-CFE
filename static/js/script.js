@@ -3,12 +3,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //* Se carga el historial de reportes al iniciar la página
     load_historial();
+    loadCurrentNameExcel();
 
     //* Se obtiene la referencia de los botones en la interfaz
     const generatorBtn = document.getElementById('generatorBtn'); //* Boton para generar los documentos
     const cleanBtn = document.getElementById('cleanHistorialBtn'); //* Boton para limpiar el historial
+    const uploadFileForm = document.getElementById('uploadFileForm'); //* Formulario para subir archivo Excel
+    const excelFileInput = document.getElementById('excelFile'); //* Input de tipo file donde es subido el archivo Excel
 
-    //* Se agrega un evento click al botón generador de documentos
+    //* Se escucha el evento click del botón generador de documentos
     generatorBtn.addEventListener('click', function() {
         //* Se obtiene el mes seleccionado por el usuario a través de un elemento select
         const month = document.getElementById("monthSelect").value;
@@ -88,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    //* Se agrega un evento click al botón para limpiar el historial
+    //* Se escucha el evento click del botón para limpiar el historial
     cleanBtn.addEventListener("click", function() {
         fetch("http://127.0.0.1:5000/clean_historial", { method: "POST"})
         .then(response => response.json())
@@ -101,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     icon: "error",
                     customClass: {
                         title: "atkinson-hyperlegible-next",
-                        text: "atkinson-hyperlegible-next",
+                        htmlContainer: "atkinson-hyperlegible-next",
                         confirmButton: "details-btn atkinson-hyperlegible-next"
                     }});
             }else{
@@ -121,10 +124,101 @@ document.addEventListener("DOMContentLoaded", () => {
             Swal.fire({ title: "Error", text: "No fue posible limpiar el historial.", icon: "error"});
         })
     });
+
+    //* Se escucha el evento submit del formulario para subir un nuevo archivo Excel
+    uploadFileForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let excelFile = document.getElementById('excelFile');
+        //* Se verifica que haya un archivo Excel anclado
+        if(excelFile.files.length === 0){
+            Swal.fire({
+                title: "Error",
+                text: "Seleccione un archivo con la información adecuada.",
+                icon: "error",
+                customClass: {
+                    title: "atkinson-hyperlegible-next",
+                    htmlContainer: "atkinson-hyperlegible-next",
+                    confirmButton: "details-btn atkinson-hyperlegible-next"
+                }
+            });
+            return;
+        }
+
+        //* Se crea una nueva instancia de FormData, la cual sirve para construir un conjunto de pares clave-valor,
+        //* similar a como se envían los datos de un formulario de HTML pero con mayor control y flexibilidad
+        let formData = new FormData();
+        formData.append("excel_file", excelFile.files[0]);
+
+        Swal.fire({
+            title: "Subiendo archivo Excel...",
+            allowOutsideClick: false,
+            didOpen: () => { Swal.showLoading(); }
+        });
+
+        fetch("http://127.0.0.1:5000/upload_excel", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            Swal.close();
+            if(data.error){
+                Swal.fire({
+                    title: "Error",
+                    text: data.error,
+                    icon: "error",
+                    customClass: {
+                        title: "atkinson-hyperlegible-next",
+                        htmlContainer: "atkinson-hyperlegible-next",
+                        confirmButton: "details-btn atkinson-hyperlegible-next"
+                    }
+                });
+            }else{
+                Swal.fire({
+                    title: "Archivo subido",
+                    text: data.message,
+                    icon: "success",
+                    customClass: {
+                        title: "atkinson-hyperlegible-next",
+                        htmlContainer: "atkinson-hyperlegible-next",
+                        confirmButton: "details-btn atkinson-hyperlegible-next"
+                    }
+                });
+                loadCurrentNameExcel();
+            }
+        }).catch(error => {
+            Swal.close();
+            Swal.fire({
+                title: "Error",
+                text: "Ocurrio un error al intentar subir el archivo.",
+                icon: "error",
+                customClass: {
+                    title: "atkinson-hyperlegible-next",
+                    htmlContainer: "atkinson-hyperlegible-next",
+                    confirmButton: "details-btn atkinson-hyperlegible-next"
+                }
+            });
+            console.error("Error al subir el archivo: ", error);
+        });
+    });
+
+    //* Se escucha el evento change del input para subir el nuevo archivo
+    excelFileInput.addEventListener("change", (e) => {
+        const pinnedExcelSpan = document.getElementById('pinnedExcelSpan');
+
+        if(e.target.files && e.target.files.length > 0){
+            //* Se obtiene el primer archivo seleccionado
+            const filename = e.target.files[0].name;
+            //* Se actualiza el contenido del span donde se mostrara el nombre del archivo
+            pinnedExcelSpan.textContent = filename;
+        }else{
+            pinnedExcelSpan.textContent = "Ninguno";
+        }
+    });
 });
 
 //* Función: load_historial
-//* Objetivo: Cargar y mostrar en tiempo real la lista de documentos del historial
+//* Objetivo: Cargar y mostrar en tiempo real la lista de documentos del historial.
 const load_historial = () => {
     fetch("http://127.0.0.1:5000/historial")
         .then(response => response.json())
@@ -151,4 +245,22 @@ const load_historial = () => {
                 list.innerHTML = `<li class="atkinson-hyperlegible-next">No hay reportes en el historial</li>`;
             }
         }).catch(error => console.error("Error al cargar el historial: ", error));
+};
+
+//* Función: loadCurrentNameExcel
+//* Objetivo: Obtener el nombre original del archivo Excel en uso desde la respuesta del endpoint correspondiente.
+const loadCurrentNameExcel = () => {
+    fetch("http://127.0.0.1:5000/current_excel")
+    .then(response => response.json())
+    .then(data => {
+        const currentExcelName = document.getElementById('currentExcelSpan');
+        if(data.filename){
+            currentExcelName.textContent = data.filename;
+        }else{
+            currentExcelName.textContent = 'Ninguno';
+        }
+    }).catch(error => {
+        console.error("Error al cargar el nombre del archivo actual: ", error);
+        
+    });
 };
