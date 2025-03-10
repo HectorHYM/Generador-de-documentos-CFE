@@ -1,5 +1,6 @@
 //* Se carga primeramente todo el DOM (Document Object Model)
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("Script y DOM cargado");
 
     //* Se carga el historial de reportes al iniciar la página
     load_historial();
@@ -10,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const cleanBtn = document.getElementById('cleanHistorialBtn'); //* Boton para limpiar el historial
     const uploadFileForm = document.getElementById('uploadFileForm'); //* Formulario para subir archivo Excel
     const excelFileInput = document.getElementById('excelFile'); //* Input de tipo file donde es subido el archivo Excel
+    const advicesBtn = document.getElementById('advicesBtn'); //* Botón para recomendaciones sobre la app
+    const formatoInfoBtn = document.getElementById('formatInfoBtn'); //* Botón para información sobre el formato Word
 
     //* Se escucha el evento click del botón generador de documentos
     generatorBtn.addEventListener('click', function() {
@@ -214,6 +217,54 @@ document.addEventListener("DOMContentLoaded", () => {
         }else{
             pinnedExcelSpan.textContent = "Ninguno";
         }
+    });
+
+    advicesBtn.addEventListener('click', () => {
+        console.log("Botón de consejos presionado");
+        Swal.fire({
+            title: "¿Qué es lo que espera la aplicación?",
+            html: `
+                <p class="body-modal atkinson-hyperlegible-next">El funcionamiento de la aplicación se basa en la información brindada por el usuario 
+                a traves de un archivo Excel, si el formato de la información es diferente a la esperada, el generador no funcionará 
+                o generara de manera incorrecta los reportes. Para asegurarse de que el generador funcione adecuadamente se deben tener 
+                los siguientes datos con los respectivos nombres en los encabezados o las columnas:</p>
+                <ul class="atkinson-hyperlegible-next">
+                    <li class="columns-name">ID_CURSO</li>
+                    <li class="columns-name">MES_PROGRAMADO</li>
+                    <li class="columns-name">FECHA_INICIO</li>
+                    <li class="columns-name">FECHA_TERMINO</li>
+                    <li class="columns-name">ID_ACTIVIDAD</li>
+                    <li class="columns-name">NOMBRE_CURSO</li>
+                    <li class="columns-name">RPE</li>
+                    <li class="columns-name">NOMBRE_COMPLETO</li>
+                    <li class="columns-name">SEXO_TRAB</li>
+                </ul>
+                <p class="body-modal atkinson-hyperlegible-next">Algunas de las columnas son necesarias para que el generador funcione, 
+                otras de estas en dado caso de llegar a faltar información simplemente no se mostraran en los documentos generados.</p>
+            `,
+            customClass: {
+                title: "atkinson-hyperlegible-next-semibold title-modal",
+                confirmButton: "details-btn atkinson-hyperlegible-next"
+            }
+        });
+    });
+
+    formatoInfoBtn.addEventListener('click', () => {
+        Swal.fire({
+            title: 'Más sobre la generación automática de los reportes',
+            html: `
+               <p class="body-modal atkinson-hyperlegible-next">El formato de Word en el que se generan los reportes es el brindado por CFE, en dado caso de que el formato
+               se haya renovado o cambiado, será necesario comunicarse con el desarrollador. Toda la información mostrada
+               en los documentos Word generados son en base a la información del archivo Excel así como tambien el número de
+               reportes generados.
+               La información plasmada en el formato requiere que en el formato Word existan ciertas etiquetas y jerarquía o aparición
+               de las tablas las cuales tambien contienen información.</p> 
+            `,
+            customClass: {
+                title: "atkinson-hyperlegible-next-semibold title-modal",
+                confirmButton: "details-btn atkinson-hyperlegible-next"
+            }
+        });
     });
 });
 
