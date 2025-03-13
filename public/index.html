@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Se define el tipo de documento y el idioma -->
+    <meta charset="UTF-8">
+    <!-- Configuración del viewport para hacer la página responsiva -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de documentos - CFE</title>
+    <!-- Vinculación a la hoja de estilos externa ubicada en la carpeta static/css -->
+    <link rel="stylesheet" href="./styles.css">
+    <!-- Preconexión a Google Fonts para acelerar la carga de fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Importación de la fuente "Atkinson Hyperlegible Next" desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header: Contenedor superior que generalmente contiene el logo y navegación -->
+    <header>
+        <!-- Logo de CFE, se utiliza la función 'url_for' de Flask para acceder a la imagen en la carpeta static/img -->
+        <img class="cfe-logo" src="./img/CFE_LOGO.png" alt="Logo de CFE">
+        <!-- Logo de SUTERM, igualmente referenciado desde la carpeta static/img -->
+        <img class="suterm-logo" src="./img/SUTERM_LOGO.png" alt="Logo de SUTERM">
+    </header>
+    
+    <!-- Main: Contenedor principal de la página -->
+    <main>
+        <!-- Contenedor externo para centrar el contenido (usualmente se usa con Flexbox) -->
+        <div class="main-cont-external">
+            <!-- Contenedor interno donde se ubica el mensaje de bienvenida y el botón -->
+            <div class="main-cont-internal">
+                <!-- Título principal con la fuente importada, mostrando el mensaje de bienvenida -->
+                <h2 class="atkinson-hyperlegible-next-semibold">
+                    Bienvenido!
+                    Genere sus documentos de manera rapida y sencilla!
+                </h2>
+                <img class="report-gif" src="./img/report_animation.gif" alt="Detalle animado">
+                <form class="upload-file-form" id="uploadFileForm" enctype="multipart/form-data">
+                    <label for="excelFile" class="atkinson-hyperlegible-next custom-input-file">Seleccionar nuevo archivo de datos</label>
+                    <input type="file" name="excel_file" id="excelFile" class="excel-file" accept=".xlsx, .xls">
+                    <p class="atkinson-hyperlegible-next pinned-excel-p">Archivo anclado: <span id="pinnedExcelSpan" class="pinned-excel-span">Ninguno</span></p>
+                    <p class="atkinson-hyperlegible-next current-excel-p">Archivo en uso: <span id="currentExcelSpan" class="current-excel-span">Ninguno</span></p>
+                    <button class="atkinson-hyperlegible-next upload-excel-btn" type="submit">Subir archivo Excel</button>
+                </form>
+                <!-- Selector de mes en los que se generaran los reportes-->
+                <div class="generator-cont">
+                    <div class="month-selector-cont">
+                        <p class="atkinson-hyperlegible-next">Seleccione el mes que desea generar</p>
+                        <select class="month-select atkinson-hyperlegible-next" id="monthSelect">
+                            <option value="1">Enero</option>
+                            <option value="2">Febrero</option>
+                            <option value="3">Marzo</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Mayo</option>
+                            <option value="6">Junio</option>
+                            <option value="7">Julio</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Noviembre</option>
+                            <option value="12">Diciembre</option>    
+                        </select>
+                    </div>
+                    <!-- Botón para generar los reportes; se le asigna un ID para poder capturar el evento desde JavaScript -->
+                    <button class="generator-btn atkinson-hyperlegible-next" id="generatorBtn">Generar</button>
+                </div>
+            </div>
+            <div class="historial-cont">
+                <h2 class="atkinson-hyperlegible-next-semibold">Ultimos reportes generados</h2>
+                <ul class="historial-list" id="historial-list"></ul>
+                <div>
+                    <button class="clean-btn atkinson-hyperlegible-next" id="cleanHistorialBtn">Limpiar Historial</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="cards-container">
+            <div class="card">
+                <div class="cover">
+                    <img src="./img/worker.png" alt="">
+                    <div class="bg-img"></div>
+                </div>
+                <div class="description">
+                    <h2 class="atkinson-hyperlegible-next-semibold">Suba su archivo</h2>
+                    <p class="atkinson-hyperlegible-next">Suba sus archivos Excel con la información correspondiente y una estructura adecuada.</p>
+                    <input class="atkinson-hyperlegible-next" id="advicesBtn" type="button" value="Leer recomendaciones">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="cover">
+                    <img src="./img/worker2.png" alt="">
+                    <div class="bg-img"></div>
+                </div>
+                <div class="description">
+                    <h2 class="atkinson-hyperlegible-next-semibold">Genere documentos</h2>
+                    <p class="atkinson-hyperlegible-next">Genere los documentos correspondiente con el formato Word predefinido junto a la información de la base de datos ingresada.</p>
+                    <input class="atkinson-hyperlegible-next" id="formatInfoBtn" type="button" value="Más sobre el formato">
+                </div>
+            </div>
+        </div>
+        <div class="final-info">
+            <div class="information">
+                <span class="atkinson-hyperlegible-next">Comisión Federal de Electricidad</span>
+                <span class="atkinson-hyperlegible-next">Centro de Distribución Salahua</span>
+                <span class="atkinson-hyperlegible-next">Desarrollador: Héctor Jesús Huerta Escoto - hectorjesus029@gmail.com</span>
+            </div>
+            <img class="cfe-logo" src="./img/CFE_LOGO.png" alt="Logo de CFE">
+        </div>
+    </footer>
+
+    <!-- Se vincula el archivo JavaScript ubicado en la carpeta static/js así como otros recursos-->
+    <script src="./script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
