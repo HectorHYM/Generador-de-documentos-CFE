@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         //* Se realiza una petición HTTP de tipo POST a la ruta '/generate' del servidor Flask
-        fetch("http://127.0.0.1:5000/generate", { 
+        fetch("https://generador-de-documentos-cfe.onrender.com/generate", { 
             method: "POST", //? Método HTTP POST para enviar datos al servidor
             headers: {
                 "Content-Type": "application/json" //? Especifica que se enviará JSON en la solicitud
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //* Se escucha el evento click del botón para limpiar el historial
     cleanBtn.addEventListener("click", function() {
-        fetch("http://127.0.0.1:5000/clean_historial", { method: "POST"})
+        fetch("https://generador-de-documentos-cfe.onrender.com/clean_historial", { method: "POST"})
         .then(response => response.json())
         .then(data => {
             if(data.error){
@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
             didOpen: () => { Swal.showLoading(); }
         });
 
-        fetch("http://127.0.0.1:5000/upload_excel", {
+        fetch("https://generador-de-documentos-cfe.onrender.com/upload_excel", {
             method: "POST",
             body: formData
         })
@@ -271,7 +271,7 @@ document.addEventListener("DOMContentLoaded", () => {
 //* Función: load_historial
 //* Objetivo: Cargar y mostrar en tiempo real la lista de documentos del historial.
 const load_historial = () => {
-    fetch("http://127.0.0.1:5000/historial")
+    fetch("https://generador-de-documentos-cfe.onrender.com/historial")
         .then(response => response.json())
         .then(data => {
             console.log("Historial cargado: ", data); //* Se verifica que se reciba la respuesta correctamente
@@ -301,7 +301,7 @@ const load_historial = () => {
 //* Función: loadCurrentNameExcel
 //* Objetivo: Obtener el nombre original del archivo Excel en uso desde la respuesta del endpoint correspondiente.
 const loadCurrentNameExcel = () => {
-    fetch("http://127.0.0.1:5000/current_excel")
+    fetch("https://generador-de-documentos-cfe.onrender.com/current_excel")
     .then(response => response.json())
     .then(data => {
         const currentExcelName = document.getElementById('currentExcelSpan');
