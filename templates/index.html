@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de documentos - CFE</title>
     <!-- Vinculación a la hoja de estilos externa ubicada en la carpeta static/css -->
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <!-- Preconexión a Google Fonts para acelerar la carga de fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,9 +18,9 @@
     <!-- Header: Contenedor superior que generalmente contiene el logo y navegación -->
     <header>
         <!-- Logo de CFE, se utiliza la función 'url_for' de Flask para acceder a la imagen en la carpeta static/img -->
-        <img class="cfe-logo" src="./img/CFE_LOGO.png" alt="Logo de CFE">
+        <img class="cfe-logo" src="{{ url_for('static', filename='img/CFE_LOGO.png') }}" alt="Logo de CFE">
         <!-- Logo de SUTERM, igualmente referenciado desde la carpeta static/img -->
-        <img class="suterm-logo" src="./img/SUTERM_LOGO.png" alt="Logo de SUTERM">
+        <img class="suterm-logo" src="{{ url_for('static', filename='img/SUTERM_LOGO.png') }}" alt="Logo de SUTERM">
     </header>
     
     <!-- Main: Contenedor principal de la página -->
@@ -34,7 +34,7 @@
                     Bienvenido!
                     Genere sus documentos de manera rapida y sencilla!
                 </h2>
-                <img class="report-gif" src="./img/report_animation.gif" alt="Detalle animado">
+                <img class="report-gif" src="{{ url_for('static', filename='img/report_animation.gif') }}" alt="Detalle animado">
                 <form class="upload-file-form" id="uploadFileForm" enctype="multipart/form-data">
                     <label for="excelFile" class="atkinson-hyperlegible-next custom-input-file">Seleccionar nuevo archivo de datos</label>
                     <input type="file" name="excel_file" id="excelFile" class="excel-file" accept=".xlsx, .xls">
@@ -79,7 +79,7 @@
         <div class="cards-container">
             <div class="card">
                 <div class="cover">
-                    <img src="./img/worker.png" alt="">
+                    <img src="{{ url_for('static', filename='img/worler.png') }}" alt="">
                     <div class="bg-img"></div>
                 </div>
                 <div class="description">
@@ -91,7 +91,7 @@
 
             <div class="card">
                 <div class="cover">
-                    <img src="./img/worker2.png" alt="">
+                    <img src="{{ url_for('static', filename='img/worker2.png') }}" alt="">
                     <div class="bg-img"></div>
                 </div>
                 <div class="description">
@@ -107,12 +107,12 @@
                 <span class="atkinson-hyperlegible-next">Centro de Distribución Salahua</span>
                 <span class="atkinson-hyperlegible-next">Desarrollador: Héctor Jesús Huerta Escoto - hectorjesus029@gmail.com</span>
             </div>
-            <img class="cfe-logo" src="./img/CFE_LOGO.png" alt="Logo de CFE">
+            <img class="cfe-logo" src="{{ url_for('static', filename='img/CFE_LOGO.png') }}" alt="Logo de CFE">
         </div>
     </footer>
 
     <!-- Se vincula el archivo JavaScript ubicado en la carpeta static/js así como otros recursos-->
-    <script src="./script.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
