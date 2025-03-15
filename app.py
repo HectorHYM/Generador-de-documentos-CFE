@@ -21,7 +21,7 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 # Se crea una instancia de la aplicación Flask
-app = Flask(__name__, template_folder="./public")
+app = Flask(__name__)
 
 # =============================================================
 # Ruta principal (Home)
