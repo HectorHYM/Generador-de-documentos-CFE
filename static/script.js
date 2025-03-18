@@ -273,7 +273,8 @@ document.addEventListener("DOMContentLoaded", () => {
                en los documentos Word generados son en base a la información del archivo Excel así como tambien el número de
                reportes generados.
                La información plasmada en el formato requiere que en el formato Word existan ciertas etiquetas y jerarquía o aparición
-               de las tablas las cuales tambien contienen información.</p> 
+               de las tablas las cuales tambien contienen información.
+               Si se desea cambiar el documento debe ser nombrado como <span class="word-name">FORMATO_WORD.docx</span></p> 
             `,
             customClass: {
                 title: "atkinson-hyperlegible-next-semibold title-modal",

@@ -447,6 +447,10 @@ footer{
     color: #22a24b;
 }
 
+.word-name{
+    color: #4189ff;
+}
+
 .final-info{
     display: flex;
     justify-content: space-between;
