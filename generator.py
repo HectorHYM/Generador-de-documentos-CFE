@@ -231,7 +231,7 @@ def generate_reports():
                 for batch in range(num_batches):
                     try:
                         # Se carga la plantilla de Word para el reporte
-                        doc = Document('FORMATO DE LISTA DE ASISTENCIA enero 2025.docx')
+                        doc = Document('FORMATO_WORD.docx')
                     except FileNotFoundError:
                         print("Error: No se encontró el documento base de Word.")
                         exit()
