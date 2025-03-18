@@ -86,7 +86,11 @@ document.addEventListener("DOMContentLoaded", () => {
             Swal.fire({
                 title: "Error",
                 text: error.details || "Hubo un error al generar los reportes.",
-                icon: "Error"
+                icon: "error",
+                customClass: {
+                    title: "details-title atkinson-hyperlegible-next",
+                    confirmButton: "details-btn atkinson-hyperlegible-next"
+                }
             });
 
             //* Se registra el error en la consola para depuración 
@@ -155,7 +159,10 @@ document.addEventListener("DOMContentLoaded", () => {
         Swal.fire({
             title: "Subiendo archivo Excel...",
             allowOutsideClick: false,
-            didOpen: () => { Swal.showLoading(); }
+            didOpen: () => { Swal.showLoading(); },
+            customClass: {
+                title: "details-title atkinson-hyperlegible-next"
+            }
         });
 
         fetch("https://generador-de-documentos-cfe.onrender.com/upload_excel", {
@@ -241,6 +248,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 </ul>
                 <p class="body-modal atkinson-hyperlegible-next">Algunas de las columnas son necesarias para que el generador funcione, 
                 otras de estas en dado caso de llegar a faltar información simplemente no se mostraran en los documentos generados.</p>
+                <p class="body-modal atkinson-hyperlegible-next">Por otro lado es importante tambien contar con las 2 hojas de la
+                información tanto de los cursos como de los participantes, estas hojas deben contar con los siguiente nombres:</p>
+                <ul class="atkinson-hyperlegible-next">
+                    <li class="columns-name">P01 (Hoja con los datos de los cursos)</li>
+                    <li class="columns-name">PARTIP01 (Hoja con los datos de los participantes)</li>
+                </ul>
+                <p class="body-modal atkinson-hyperlegible-next">En cualquier caso de querer cambiar estos nombres por defecto favor
+                de comunicarse con el desarrollador.</p>
             `,
             customClass: {
                 title: "atkinson-hyperlegible-next-semibold title-modal",
