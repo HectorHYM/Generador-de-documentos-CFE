@@ -160,11 +160,24 @@ def generate_reports():
         
     # Se obtiene el mes seleccionado o el actual (1 = Enero, 2 = Febrero, etc...)
     current_month = selected_month
-    # Se configura el locale para obtener el nombre del mes en español
-    locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
-    # Se obtiene el nombre del mes en español una vez ya configurado el locale
+    # Se configura el diccionario con los nombres de los meses en español
+    month_names = {
+        1: 'Enero',
+        2: 'Febrero',
+        3: 'Marzo',
+        4: 'Abril',
+        5: 'Mayo',
+        6: 'Junio',
+        7: 'Julio',
+        8: 'Agosto',
+        9: 'Septiembre',
+        10: 'Octubre',
+        11: 'Noviembre',
+        12: 'Diciembre'
+    }
+    # Se obtiene el nombre del mes en español una vez ya configurado el diccionario
     # Se crea un objeto datetime con un día cualquiera para ese mes y se formatea el nombre (capitalizado)
-    month_name = datetime(1900, current_month, 1).strftime('%B').capitalize()
+    month_name = month_names.get(current_month, '')
 
     # Verifica que las columnas esenciales existan en ambos Dataframes
     required_columns = {'ID_CURSO', 'MES_PROGRAMADO', 'FECHA_INICIO', 'FECHA_TERMINO', 'ID_ACTIVIDAD'}
