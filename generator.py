@@ -125,7 +125,7 @@ def add_participants(doc, participants):
 def generate_reports():
     try:
         # Ruta del archivo Excel con la información de cursos y participantes
-        excel_path = 'db_excel.xlsx'
+        excel_path = 'DB_EXCEL.xlsx'
         if not os.path.exists(excel_path):
             error_message = f"Error: No se encontró el archivo {excel_path}. Verifique su existencia o ubicación"
             print(error_message, flush=True)
@@ -231,7 +231,7 @@ def generate_reports():
                 for batch in range(num_batches):
                     try:
                         # Se carga la plantilla de Word para el reporte
-                        doc = Document('FORMATO DE LISTA DE ASISTENCIA enero 2025.docx')
+                        doc = Document('FORMATO_WORD.docx')
                     except FileNotFoundError:
                         print("Error: No se encontró el documento base de Word.")
                         exit()
