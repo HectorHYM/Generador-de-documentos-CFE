@@ -284,14 +284,20 @@ const load_historial = () => {
 
             list.innerHTML = ""; //* Se limpia la lista actual
             if(data.historial && data.historial.length > 0){
+                //* Se filtra y elimina el archivo .gitkeep de la lista para el historial
+                const filteredFiles = data.historial.filter(file => file !== ".gitkeep");
                 //* Si existen archivos en el historial, se crean elementos de lista para cada uno
-                data.historial.forEach((file) => {
-                    if(file === ".gitkeep") return; //* Se salta el proceso si el archivo es .gitkeep
-                    let li = document.createElement("li");
-                    li.className = "historial-file atkinson-hyperlegible-next";
-                    li.textContent = file;
-                    list.appendChild(li);
-                });
+                if(filteredFiles.length > 0){
+                    data.historial.forEach((file) => {
+                        let li = document.createElement("li");
+                        li.className = "historial-file atkinson-hyperlegible-next";
+                        li.textContent = file;
+                        list.appendChild(li);
+                    });
+                }else{
+                    //* En caso de no haber archivos se muestra un mensaje indicándolo
+                    list.innerHTML = `<li class="atkinson-hyperlegible-next">No hay reportes en el historial</li>`;
+                }
             }else{
                 //* En caso de no haber archivos se muestra un mensaje indicándolo
                 list.innerHTML = `<li class="atkinson-hyperlegible-next">No hay reportes en el historial</li>`;
