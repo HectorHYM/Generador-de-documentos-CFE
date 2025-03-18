@@ -14,6 +14,16 @@ html, body {
     width: 100%;
 }
 
+/* Iconos */
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
 /* Fuentes */
 
 .atkinson-hyperlegible-next{
@@ -42,7 +52,8 @@ html, body {
 .description input,
 .card,
 .cover img,
-.description{
+.description,
+.alert-text{
     transition: 0.3s all ease;
 }
 
@@ -278,6 +289,61 @@ li{
 .clean-btn:hover{
     background-color: #00743f;
     color: #FFFFFF;
+}
+
+.ext-alert-btn-cont{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.alert-btn-cont{
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    width: 5%;
+}
+
+.alert-btn{
+    background: #ffcd00;
+    color: #222222;
+    border: none;
+    border-radius: 20px;
+    padding: 6px;
+    margin: 8px;
+    cursor: pointer;
+}
+
+.alert-text{
+    visibility: hidden; /* Oculto por defecto */
+    width: 300px;
+    background-color: #ffcd00;
+    color: #333333;
+    text-align: justify;
+    border-radius: 8px;
+    padding: 12px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Se posiciona el tooltip por encima del botón */
+    margin-right: 1rem;
+    opacity: 0;
+}
+
+/* Puntero del tooltip (triángulo) */
+.alert-text::after{
+    content: "";
+    position: absolute;
+    top: 100%; /* En la parte inferior del tooltip */
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+    left: 95%;
+}
+
+/* Se muestra el tooltip al pasar el ratón por encima del contenedor */
+.alert-btn-cont:hover .alert-text{
+    visibility: visible;
+    opacity: 1;
 }
 
 /* Pie de página */
