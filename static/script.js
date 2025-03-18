@@ -278,7 +278,7 @@ const load_historial = () => {
 
             let list = document.getElementById("historial-list"); //* Se obtiene el contenedor donde se mostrará el historial
             if(!list){
-                console.error("No se escontro el contenedor del historial en el HTML.");
+                console.error("No se encontro el contenedor del historial en el HTML.");
                 return;
             }
 
@@ -286,6 +286,7 @@ const load_historial = () => {
             if(data.historial && data.historial.length > 0){
                 //* Si existen archivos en el historial, se crean elementos de lista para cada uno
                 data.historial.forEach((file) => {
+                    if(file === ".gitkeep") return; //* Se salta el proceso si el archivo es .gitkeep
                     let li = document.createElement("li");
                     li.className = "historial-file atkinson-hyperlegible-next";
                     li.textContent = file;
