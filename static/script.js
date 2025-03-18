@@ -304,6 +304,7 @@ const load_historial = () => {
                 //* Si existen archivos en el historial, se crean elementos de lista para cada uno
                 if(filteredFiles.length > 0){
                     data.historial.forEach((file) => {
+                        if(file === ".gitkeep") return;
                         let li = document.createElement("li");
                         li.className = "historial-file atkinson-hyperlegible-next";
                         li.textContent = file;
