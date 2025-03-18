@@ -161,7 +161,7 @@ def generate_reports():
     # Se obtiene el mes seleccionado o el actual (1 = Enero, 2 = Febrero, etc...)
     current_month = selected_month
     # Se configura el locale para obtener el nombre del mes en español
-    locale.setlocale(locale.LC_TIME, 'es_ES.utf8')
+    locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
     # Se obtiene el nombre del mes en español una vez ya configurado el locale
     # Se crea un objeto datetime con un día cualquiera para ese mes y se formatea el nombre (capitalizado)
     month_name = datetime(1900, current_month, 1).strftime('%B').capitalize()
